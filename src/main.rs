@@ -32,6 +32,17 @@ impl<T> LinkedList<T> where T: fmt::Display {
         self.root.as_ref().map(|node| &node.value)
     }
 
+    fn last(&self) -> Option<&T> {
+        let mut lst = self.root.as_ref();
+        let mut cur = lst;
+
+        while let Some(node) = cur {
+            lst = cur;
+            cur = node.next.as_ref();
+        }
+        lst.map(|node| &node.value)
+    }
+
     fn print_all(&self) {
         let mut current = self.root.as_ref();
 
@@ -50,7 +61,11 @@ fn main() {
     l1.print_all();
 
     println!("first: {}", l1.first().unwrap());
+    println!("last: {}", l1.last().unwrap());
 
     l1.push_front("hij");
     l1.print_all();
+
+    println!("first: {}", l1.first().unwrap());
+    println!("last: {}", l1.last().unwrap());
 }
