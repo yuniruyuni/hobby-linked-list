@@ -19,13 +19,17 @@ impl<T> LinkedList<T> where T: fmt::Display {
         }
     }
 
-    fn push(&mut self, v: T) {
+    fn push_front(&mut self, v: T) {
         let newroot = Some(Box::new(Node {
             next: self.root.take(),
             value: v,
         }));
         self.root = newroot;
         self.size += 1;
+    }
+
+    fn first(&self) -> Option<&T> {
+        self.root.as_ref().map(|node| &node.value)
     }
 
     fn print_all(&self) {
@@ -41,7 +45,12 @@ impl<T> LinkedList<T> where T: fmt::Display {
 
 fn main() {
     let mut l1 = LinkedList::new();
-    l1.push("abc");
-    l1.push("def");
+    l1.push_front("abc");
+    l1.push_front("def");
+    l1.print_all();
+
+    println!("first: {}", l1.first().unwrap());
+
+    l1.push_front("hij");
     l1.print_all();
 }
