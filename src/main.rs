@@ -65,8 +65,31 @@ impl<T> LinkedList<T> where T: fmt::Display {
             current = node.next.as_ref();
         }
     }
+
+    fn iter(&self) -> LinkedListIterator<T> {
+        LinkedListIterator {
+            cur: self.root.as_ref(),
+        }
+    }
 }
 
+struct LinkedListIterator<'a, T> {
+    cur: Option<&'a Box<Node<T>>>,
+}
+
+impl<'a, T> Iterator for LinkedListIterator<'a, T> {
+    type Item = &'a T;
+
+    fn next(&mut self) -> Option<&'a T> {
+        let cur = self.cur.take();
+        if let Some(node) = cur {
+            self.cur = node.next.as_ref();
+            Some(&node.value)
+        } else {
+            None
+        }
+    }
+}
 
 fn main() {
     let mut l1 = LinkedList::new();
@@ -88,4 +111,8 @@ fn main() {
 
     println!("first: {}", l1.first().unwrap());
     println!("last: {}", l1.last().unwrap());
+
+    for v in l1.iter() {
+        println!("{}", v);
+    }
 }
