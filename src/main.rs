@@ -60,6 +60,19 @@ impl<T> LinkedList<T> where T: fmt::Display {
     fn pop_front(&mut self) {
         if let Some(node) = self.root.take() {
             self.root = node.next;
+            self.size -= 1;
+        }
+    }
+
+    fn pop_back(&mut self) {
+        let mut cur = self.root.as_mut();
+        while let Some(node) = cur {
+            // ugly... it is because of borrow checking. fix it if you can.
+            if node.next.is_some() && node.next.as_ref().unwrap().next.is_none() {
+                node.next = None;
+                break;
+            }
+            cur = node.next.as_mut();
         }
     }
 
@@ -191,5 +204,16 @@ mod test {
         l.pop_front();
 
         assert_eq!(l.first(), Some(&"def"));
+    }
+
+    #[test]
+    fn pop_back() {
+        let mut l = LinkedList::new();
+        l.push_back("abc");
+        l.push_back("def");
+
+        l.pop_back();
+
+        assert_eq!(l.last(), Some(&"abc"));
     }
 }
