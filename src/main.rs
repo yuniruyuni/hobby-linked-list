@@ -43,6 +43,20 @@ impl<T> LinkedList<T> where T: fmt::Display {
         lst.map(|node| &node.value)
     }
 
+    fn push_back(&mut self, v: T) {
+        let mut cur = &mut self.root;
+
+        while let Some(node) = cur {
+            cur = &mut node.next;
+        }
+
+        *cur = Some(Box::new(Node {
+            next: None,
+            value: v,
+        }));
+        self.size += 1;
+    }
+
     fn print_all(&self) {
         let mut current = self.root.as_ref();
 
@@ -64,6 +78,12 @@ fn main() {
     println!("last: {}", l1.last().unwrap());
 
     l1.push_front("hij");
+    l1.print_all();
+
+    println!("first: {}", l1.first().unwrap());
+    println!("last: {}", l1.last().unwrap());
+
+    l1.push_back("xyz");
     l1.print_all();
 
     println!("first: {}", l1.first().unwrap());
