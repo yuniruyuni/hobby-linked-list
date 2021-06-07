@@ -57,6 +57,12 @@ impl<T> LinkedList<T> where T: fmt::Display {
         self.size += 1;
     }
 
+    fn pop_front(&mut self) {
+        if let Some(node) = self.root.take() {
+            self.root = node.next;
+        }
+    }
+
     fn print_all(&self) {
         let mut current = self.root.as_ref();
 
@@ -174,5 +180,16 @@ mod test {
     fn push_last_none() {
         let l: LinkedList::<&str> = LinkedList::new();
         assert_eq!(l.last(), None);
+    }
+
+    #[test]
+    fn pop_front() {
+        let mut l = LinkedList::new();
+        l.push_back("abc");
+        l.push_back("def");
+
+        l.pop_front();
+
+        assert_eq!(l.first(), Some(&"def"));
     }
 }
