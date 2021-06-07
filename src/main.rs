@@ -116,3 +116,63 @@ fn main() {
         println!("{}", v);
     }
 }
+
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn push_front() {
+        let mut l = LinkedList::new();
+        l.push_front("abc");
+        l.push_front("def");
+
+        for (actual, expected) in l.iter().zip(["def", "abc"].iter()) {
+            assert_eq!(actual, expected);
+        }
+    }
+
+    #[test]
+    fn push_back() {
+        let mut l = LinkedList::new();
+        l.push_back("abc");
+        l.push_back("def");
+
+        for (actual, expected) in l.iter().zip(["abc", "def"].iter()) {
+            assert_eq!(actual, expected);
+        }
+    }
+
+    #[test]
+    fn push_first_some() {
+        let mut l = LinkedList::new();
+        l.push_back("abc");
+        l.push_back("def");
+        l.push_back("hij");
+
+        assert_eq!(l.first(), Some(&"abc"));
+    }
+
+    #[test]
+    fn push_first_none() {
+        let l: LinkedList::<&str> = LinkedList::new();
+        assert_eq!(l.first(), None);
+    }
+
+    #[test]
+    fn push_last_some() {
+        let mut l = LinkedList::new();
+        l.push_back("abc");
+        l.push_back("def");
+        l.push_back("hij");
+
+        assert_eq!(l.last(), Some(&"hij"));
+    }
+
+    #[test]
+    fn push_last_none() {
+        let l: LinkedList::<&str> = LinkedList::new();
+        assert_eq!(l.last(), None);
+    }
+}
