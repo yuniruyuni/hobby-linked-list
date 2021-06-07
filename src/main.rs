@@ -65,15 +65,11 @@ impl<T> LinkedList<T> where T: fmt::Display {
     }
 
     fn pop_back(&mut self) {
-        let mut cur = self.root.as_mut();
-        while let Some(node) = cur {
-            // ugly... it is because of borrow checking. fix it if you can.
-            if node.next.is_some() && node.next.as_ref().unwrap().next.is_none() {
-                node.next = None;
-                break;
-            }
-            cur = node.next.as_mut();
+        let mut cur = &mut self.root;
+        while cur.is_some() && cur.as_ref().unwrap().next.is_some() {
+            cur = &mut cur.as_mut().unwrap().next;
         }
+        *cur = None;
     }
 
     fn print_all(&self) {
